@@ -14,6 +14,26 @@ public class BaccaratGame {
 	double totalWinnings;
 	
 	public double evaluateWinnings() {
+		theDealer.generateDeck();
+		theDealer.shuffleDeck();
+		playerHand = theDealer.dealHand();
+		bankerHand = theDealer.dealHand();
+		if(BaccaratGameLogic.naturalWinner(playerHand, bankerHand) == 1
+			|| BaccaratGameLogic.naturalWinner(playerHand, bankerHand) == 2) {
+			if(BaccaratGameLogic.whoWon(playerHand, bankerHand) == "Player"
+				&&	BaccaratGameLogic.naturalWinner(playerHand, bankerHand) == 1) {
+				totalWinnings += currentBet;
+			}
+			else if(BaccaratGameLogic.whoWon(playerHand, bankerHand) == "Banker"
+				&&	BaccaratGameLogic.naturalWinner(playerHand, bankerHand) == 1) {
+				totalWinnings -= currentBet;
+			}
+			else if(BaccaratGameLogic.whoWon(playerHand, bankerHand) == "Draw"
+				&&	BaccaratGameLogic.naturalWinner(playerHand, bankerHand) == 1) {
+				totalWinnings += currentBet*8;
+			}
+		}
+		//BaccaratGameLogic.whoWon(playerHand, bankerHand);
 		return totalWinnings;
 	}
 }
