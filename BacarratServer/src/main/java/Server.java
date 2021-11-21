@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
@@ -19,6 +20,8 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	TheServer server;
 	private Consumer<Serializable> callback;
+	BaccaratGame myGame;
+	BaccaratInfo gameInfo;
 	
 	
 	Server(Consumer<Serializable> call){
@@ -69,13 +72,24 @@ public class Server{
 			}
 			
 			public void updateClients(String message) {
-				for(int i = 0; i < clients.size(); i++) {
-					ClientThread t = clients.get(i);
-					try {
-					 t.out.writeObject(message);
-					}
-					catch(Exception e) {}
+				try {
+					out.writeObject(message);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
+				
+				
+//				//for(int i = 0; i < clients.size(); i++) {
+//					if (count == clients.get.count) {
+//					//
+//					ClientThread t = clients.get(i);
+//					try {
+//					 t.out.writeObject(message);
+//					}
+//					catch(Exception e) {}
+//					}
+				//}
 			}
 			
 			public void run(){
@@ -91,9 +105,13 @@ public class Server{
 				
 				updateClients("new client on server: client #"+count);
 					
+				// Read and BaccaratInfo object in while(true) with information needed for the game
+				// Play the out in the server
 				 while(true) {
+					 //myGame.
 					    try {
 					    	String data = in.readObject().toString();
+					    	//myGame.playerHand();
 					    	callback.accept("client: " + count + " sent: " + data);
 					    	updateClients("client #"+count+" said: "+data);
 					    	

@@ -19,6 +19,7 @@ import javafx.stage.WindowEvent;
 
 public class GuiServer extends Application{
 
+	//Remove parts in relation to client
 	
 	TextField s1,s2,s3,s4, c1;
 	Button serverChoice,clientChoice,b1;
@@ -29,7 +30,7 @@ public class GuiServer extends Application{
 	Scene startScene;
 	BorderPane startPane;
 	Server serverConnection;
-	Client clientConnection;
+	//Client clientConnection;
 	
 	ListView<String> listItems, listItems2;
 	
@@ -64,15 +65,15 @@ public class GuiServer extends Application{
 		this.clientChoice.setStyle("-fx-pref-width: 300px");
 		this.clientChoice.setStyle("-fx-pref-height: 300px");
 		
-		this.clientChoice.setOnAction(e-> {primaryStage.setScene(sceneMap.get("client"));
-											primaryStage.setTitle("This is a client");
-											clientConnection = new Client(data->{
-							Platform.runLater(()->{listItems2.getItems().add(data.toString());
-											});
-							});
-							
-											clientConnection.start();
-		});
+//		this.clientChoice.setOnAction(e-> {primaryStage.setScene(sceneMap.get("client"));
+//											primaryStage.setTitle("This is a client");
+//											clientConnection = new Client(data->{
+//							Platform.runLater(()->{listItems2.getItems().add(data.toString());
+//											});
+//							});
+//							
+//											clientConnection.start();
+//		});
 		
 		this.buttonBox = new HBox(400, serverChoice, clientChoice);
 		startPane = new BorderPane();
@@ -86,7 +87,7 @@ public class GuiServer extends Application{
 		
 		c1 = new TextField();
 		b1 = new Button("Send");
-		b1.setOnAction(e->{clientConnection.send(c1.getText()); c1.clear();});
+		//b1.setOnAction(e->{clientConnection.send(c1.getText()); c1.clear();});
 		
 		sceneMap = new HashMap<String, Scene>();
 		
