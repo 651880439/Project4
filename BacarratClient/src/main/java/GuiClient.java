@@ -31,6 +31,7 @@ public class GuiClient extends Application{
 	BorderPane startPane;
 	//Server serverConnection;
 	Client clientConnection;
+	BaccaratInfo gameInfo;
 	
 	ListView<String> listItems, listItems2;
 	
@@ -87,7 +88,7 @@ public class GuiClient extends Application{
 		
 		c1 = new TextField();
 		b1 = new Button("Send");
-		b1.setOnAction(e->{clientConnection.send(c1.getText()); c1.clear();});
+		b1.setOnAction(e->{clientConnection.send(gameInfo);});
 		
 		sceneMap = new HashMap<String, Scene>();
 		

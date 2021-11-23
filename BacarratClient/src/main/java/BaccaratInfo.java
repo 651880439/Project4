@@ -5,6 +5,6 @@ public class BaccaratInfo implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	double betAmount;
-	String whoBetOn;
+	public double betAmount;
+	public String whoBetOn;
 }

@@ -29,7 +29,7 @@ public class Client extends Thread{
 	
 	// Change object being read into BaccaratInfo Object
 	public void run() {
-		
+		//gameInfo = new BaccaratInfo();
 		try {
 		socketClient= new Socket("127.0.0.1",5555);
 	    out = new ObjectOutputStream(socketClient.getOutputStream());
@@ -39,20 +39,21 @@ public class Client extends Thread{
 		catch(Exception e) {}
 		
 		while(true) {
-			 
 			try {
-			String message = in.readObject().toString();
-			callback.accept(message);
+			gameInfo = (BaccaratInfo)in.readObject();
+			//String message = in.readObject().toString();
+			callback.accept(gameInfo);
+			//callback.accept(message);
 			}
 			catch(Exception e) {}
 		}
 	
     }
 	
-	public void send(String data) {
-		BaccaratInfo gameInfo = new BaccaratInfo();
+	public void send(BaccaratInfo gameInfo) {
+		//BaccaratInfo gameInfo = new BaccaratInfo();
 		try {
-			out.writeObject(data);
+			out.writeObject(gameInfo);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
