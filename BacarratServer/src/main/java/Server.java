@@ -109,11 +109,14 @@ public class Server{
 				// Play the out in the server
 				 while(true) {
 					 //myGame.
+					 //gameInfo = new BaccaratInfo();
 					    try {
-					    	String data = in.readObject().toString();
+					    	//String data = in.readObject().toString();
+					    	gameInfo = (BaccaratInfo)in.readObject();
 					    	//myGame.playerHand();
-					    	callback.accept("client: " + count + " sent: " + data);
-					    	updateClients("client #"+count+" said: "+data);
+					    	//String data = gameInfo.whoBetOn;
+					    	callback.accept(gameInfo);
+					    	//updateClients(gameInfo);
 					    	
 					    	}
 					    catch(Exception e) {
