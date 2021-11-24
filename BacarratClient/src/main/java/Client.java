@@ -31,7 +31,7 @@ public class Client extends Thread{
 		portNo = portNumber;
 	}
 	
-	// Change object being read into BaccaratInfo Object
+	// Change object being read into BaccaratInfo Object.
 	public void run() {
 		//gameInfo = new BaccaratInfo();
 		try {
@@ -52,7 +52,6 @@ public class Client extends Thread{
 			callback.accept(gameInfo);
 			//callback.accept(playerHand);
 			//callback.accept(bankerHand);
-			//callback.accept(message);
 			}
 			catch(Exception e) {}
 		}
