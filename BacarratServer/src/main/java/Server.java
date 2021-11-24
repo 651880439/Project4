@@ -20,15 +20,16 @@ public class Server{
 	ArrayList<ClientThread> clients = new ArrayList<ClientThread>();
 	TheServer server;
 	private Consumer<Serializable> callback;
-	BaccaratGame myGame;
-	BaccaratInfo gameInfo;
+	BaccaratGame myGame = new BaccaratGame();
+	BaccaratInfo gameInfo = new BaccaratInfo();
+	String portNo;
 	
-	
-	Server(Consumer<Serializable> call){
+	Server(Consumer<Serializable> call, String portNumber){
 	
 		callback = call;
 		server = new TheServer();
 		server.start();
+		portNo = portNumber;
 	}
 	
 	
@@ -36,13 +37,14 @@ public class Server{
 		
 		public void run() {
 		
-			try(ServerSocket mysocket = new ServerSocket(5555);){
+			try(ServerSocket mysocket = new ServerSocket(Integer.parseInt(portNo));){
 		    System.out.println("Server is waiting for a client!");
 		  
 			
 		    while(true) {
 		
 				ClientThread c = new ClientThread(mysocket.accept(), count);
+				System.out.println("Client connected!");
 				callback.accept("client has connected to server: " + "client #" + count);
 				clients.add(c);
 				c.start();
@@ -53,6 +55,7 @@ public class Server{
 			}//end of try
 				catch(Exception e) {
 					callback.accept("Server socket did not launch");
+					e.printStackTrace();
 				}
 			}//end of while
 		}
@@ -71,9 +74,9 @@ public class Server{
 				this.count = count;	
 			}
 			
-			public void updateClients(String message) {
+			public void updateClients(BaccaratInfo gameInfo) {
 				try {
-					out.writeObject(message);
+					out.writeObject(gameInfo);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -103,7 +106,7 @@ public class Server{
 					System.out.println("Streams not open");
 				}
 				
-				updateClients("new client on server: client #"+count);
+				//updateClients("new client on server: client #"+count);
 					
 				// Read and BaccaratInfo object in while(true) with information needed for the game
 				// Play the out in the server
@@ -115,13 +118,18 @@ public class Server{
 					    	gameInfo = (BaccaratInfo)in.readObject();
 					    	//myGame.playerHand();
 					    	//String data = gameInfo.whoBetOn;
-					    	callback.accept(gameInfo);
-					    	//updateClients(gameInfo);
-					    	
+					    	//callback.accept(gameInfo);
+					    	double winnings = myGame.evaluateWinnings();
+					    	double betAmount = gameInfo.betAmount;
+					    	int numClients = clients.size();
+					    	callback.accept("Winnings " + winnings);
+					    	callback.accept("Client #: " + clients);
+					    	callback.accept("Bet Amount: "+ betAmount);
+					    	updateClients(myGame.gameInfo);
 					    	}
 					    catch(Exception e) {
 					    	callback.accept("OOOOPPs...Something wrong with the socket from client: " + count + "....closing down!");
-					    	updateClients("Client #"+count+" has left the server!");
+					    	//updateClients("Client #"+count+" has left the server!");
 					    	clients.remove(this);
 					    	break;
 					    }
