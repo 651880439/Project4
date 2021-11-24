@@ -3,6 +3,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.function.Consumer;
 
 import javafx.scene.control.TextField;
@@ -19,19 +20,22 @@ public class Client extends Thread{
 	TextField betAmount;
 	//int bet = Integer.parseInt(betAmount);
 	BaccaratInfo gameInfo;
+	String IPAdd, portNo;
+	//BaccaratGame myGame;
 	
 	private Consumer<Serializable> callback;
 	
-	Client(Consumer<Serializable> call){
-	
+	Client(Consumer<Serializable> call, String IPAddress, String portNumber){
 		callback = call;
+		IPAdd = IPAddress;
+		portNo = portNumber;
 	}
 	
 	// Change object being read into BaccaratInfo Object
 	public void run() {
 		//gameInfo = new BaccaratInfo();
 		try {
-		socketClient= new Socket("127.0.0.1",5555);
+		socketClient= new Socket(IPAdd,Integer.parseInt(portNo));
 	    out = new ObjectOutputStream(socketClient.getOutputStream());
 	    in = new ObjectInputStream(socketClient.getInputStream());
 	    socketClient.setTcpNoDelay(true);
@@ -42,7 +46,12 @@ public class Client extends Thread{
 			try {
 			gameInfo = (BaccaratInfo)in.readObject();
 			//String message = in.readObject().toString();
+			
+			ArrayList<Card> playerHand = gameInfo.playerHand;
+			ArrayList<Card> bankerHand = gameInfo.bankerHand;
 			callback.accept(gameInfo);
+			//callback.accept(playerHand);
+			//callback.accept(bankerHand);
 			//callback.accept(message);
 			}
 			catch(Exception e) {}
