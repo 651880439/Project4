@@ -1,6 +1,7 @@
 import java.io.Serializable;
 import java.util.ArrayList;
 
+//Here we have the file that implements classobeject parameter. 
 public class BaccaratInfo implements Serializable {
 	/**
 	 * 
